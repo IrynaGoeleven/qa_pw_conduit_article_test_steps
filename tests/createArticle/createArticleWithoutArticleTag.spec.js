@@ -26,11 +26,13 @@ test.beforeEach(async ({ page }) => {
   await homePage.assertYourFeedTabIsVisible();
 });
 
-test('Create an article without required fields', async () => {
+test('Create an article without an article tag', async () => {
   await homePage.clickNewArticleLink();
 
+  await createArticlePage.fillTitleField(faker.lorem.sentence());
+  await createArticlePage.fillDescriptionField(faker.lorem.paragraph());
+  await createArticlePage.fillBodyField(faker.lorem.text());
+  // Note: Not filling the tags field
   await createArticlePage.clickPublishArticleButton();
-  await createArticlePage.assertErrorMessageContainsText(
-    'Article title cannot be empty',
-  );
+  await createArticlePage.assertArticleIsPublished();
 });
